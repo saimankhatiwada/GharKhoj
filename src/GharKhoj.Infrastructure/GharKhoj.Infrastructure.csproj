@@ -1,0 +1,6 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\GharKhoj.Application\GharKhoj.Application.csproj" />
+    <ProjectReference Include="..\GharKhoj.Domain\GharKhoj.Domain.csproj" />
+  </ItemGroup>
+</Project>
