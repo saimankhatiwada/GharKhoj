@@ -12,4 +12,12 @@ public static class UserErrors
     public static Error EmailNotUnique => new(
         "Users.EmailNotUnique",
         "The provided email is not unique");
+
+    public static Error InvalidCredentials => new(
+        "Users.InvalidCredentials",
+        "The provided credentials are not correct");
+
+    public static Error InvalidRefreshToken => new(
+        "Users.InvalidRefreshToken",
+        "The provided refresh-token is not valid");
 }

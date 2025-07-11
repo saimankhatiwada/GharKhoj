@@ -1,8 +1,8 @@
-﻿using GharKhoj.Domain.Abstractions;
+﻿using GharKhoj.Domain.Users;
 
-namespace GharKhoj.Domain.Users;
+namespace GharKhoj.Application.Abstracions.Repositories;
 
-internal interface IUserRepository
+public interface IUserRepository
 {
     Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default);
     void Add(User user);
