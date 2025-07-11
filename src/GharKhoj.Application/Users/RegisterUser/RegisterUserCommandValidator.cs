@@ -7,9 +7,13 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
 {
     public RegisterUserCommandValidator()
     {
-        RuleFor(c => c.FullName)
+        RuleFor(c => c.FirstName)
             .NotEmpty()
-            .WithMessage("Fullname cannot be empty");
+            .WithMessage("Firtname cannot be empty");
+
+        RuleFor(c => c.LastName)
+            .NotEmpty()
+            .WithMessage("Lastname cannot be empty");
 
         RuleFor(c => c.Email)
             .EmailAddress()

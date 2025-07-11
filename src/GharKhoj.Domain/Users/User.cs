@@ -7,20 +7,22 @@ public sealed class User : Entity<UserId>
 {
     private readonly List<Role> _roles = [];
 
-    private User(UserId id, FullName fullNme, Email email) : base(id)
+    private User(UserId id, FirstName firstName, LastName lastName, Email email) : base(id)
     {
-        FullName = fullNme;
+        FirstName = firstName;
+        LastName = lastName;
         Email = email;
     }
 
     private User() { }
-    public FullName FullName { get; private set; }
+    public FirstName FirstName { get; private set; }
+    public LastName LastName { get; private set; }
     public Email Email { get; private set; }
     public string IdentityId { get; private set; } = string.Empty;
     public IReadOnlyCollection<Role> Roles => [.. _roles];
-    public static User RegisterUser(FullName fullName, Email email, Role role)
+    public static User RegisterUser(FirstName firstName, LastName lastName, Email email, Role role)
     {
-        var user = new User(UserId.New(), fullName, email);
+        var user = new User(UserId.New(), firstName, lastName, email);
 
         user.RaiseDomainEvent(new UserRegisteredDomainEvent(user.Id));
 
@@ -29,9 +31,10 @@ public sealed class User : Entity<UserId>
         return user;
     }
 
-    public void UpdateUser(FullName fullName, Email email)
+    public void UpdateUser(FirstName firstName, LastName lastName, Email email)
     {
-        FullName = fullName;
+        FirstName = firstName;
+        LastName = lastName;
         Email = email;
     }
 

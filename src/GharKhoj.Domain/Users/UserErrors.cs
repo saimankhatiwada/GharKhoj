@@ -20,4 +20,8 @@ public static class UserErrors
     public static Error InvalidRefreshToken => new(
         "Users.InvalidRefreshToken",
         "The provided refresh-token is not valid");
+
+    public static Error ThirdParty(string name) => new(
+        "Users.ThirdParty",
+        $"Opration failed due to {name} error");
 }
