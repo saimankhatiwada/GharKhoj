@@ -13,6 +13,7 @@ internal static class DependencyInjection
 {
     public static WebApplicationBuilder AddApiServices(this WebApplicationBuilder builder)
     {
+
         ConfigureMvcServices(builder);
 
         ConfigureApplicationAndInfrastructure(builder);

@@ -4,3 +4,45 @@ services:
     build:
       context: .
       dockerfile: src/GharKhoj.Api/Dockerfile
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://gharkhoj.jaeger:4317
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+
+  gharkhoj.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=9d9dfbfbfdfd@S
+      - MSSQL_PID=Developer
+    volumes:
+      - ./.containers/database-data:/var/opt/mssql/data
+      - ./.containers/database-logs:/var/opt/mssql/logs
+    ports:
+      - "1433:1433"
+
+  gharkhoj.idp:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=satoox
+      - KEYCLOAK_ADMIN_PASSWORD=9d9dfbfbfdfd@S
+    volumes:
+      - ./.containers/identity:/opt/keycloak/data
+      - ./.files/cipher-realm-export.json:/opt/keycloak/data/import/realm.json
+    ports:
+      - "18080:8080"
+
+  gharkhoj.cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+
+  gharkhoj.jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"    
+      - "4317:4317"      
+      - "6831:6831/udp"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
