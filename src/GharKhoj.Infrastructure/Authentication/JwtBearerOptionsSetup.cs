@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GharKhoj.Infrastructure.Authentication;
 
-internal sealed class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
+internal sealed class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly AuthenticationOptions _authenticationOptions;
 
@@ -19,8 +19,8 @@ internal sealed class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions
         options.RequireHttpsMetadata = _authenticationOptions.RequireHttpsMetadata;
         options.TokenValidationParameters.ValidIssuer = _authenticationOptions.Issuer;
     }
-
-#pragma warning disable IDE0060 // Remove unused parameter
-    public void Configure(string? name, JwtBearerOptions options) => Configure(options);
-#pragma warning restore IDE0060 // Remove unused parameter
+    public void Configure(string? name, JwtBearerOptions options)
+    {
+        Configure(options);
+    }
 }
