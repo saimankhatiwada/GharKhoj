@@ -1,16 +1,31 @@
+using GharKhoj.Api;
+using GharKhoj.Api.Extensions;
+using Scalar.AspNetCore;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers();
-
-builder.Services.AddOpenApi();
+builder.AddApiServices();
 
 WebApplication app = builder.Build();
 
+app.UseSwagger();
+
+app.UseSwaggerUI();
+
+app.MapScalarApiReference(options =>
+{
+    options.WithTheme(ScalarTheme.BluePlanet);
+    options.WithOpenApiRoutePattern("/swagger/1.0/swagger.json");
+});
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.ApplyMigrations();
 }
+
+app.UseCustomExceptionHandler();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

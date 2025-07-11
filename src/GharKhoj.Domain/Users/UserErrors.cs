@@ -23,5 +23,5 @@ public static class UserErrors
 
     public static Error ThirdParty(string name) => new(
         "Users.ThirdParty",
-        $"Opration failed due to {name} error");
+        $"Opration failed due to {name} error, please try again after sometime");
 }

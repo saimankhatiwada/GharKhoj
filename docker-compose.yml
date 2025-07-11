@@ -1,0 +1,6 @@
+services:
+  gharkhoj.api:
+    image: ${DOCKER_REGISTRY-}gharkhojapi
+    build:
+      context: .
+      dockerfile: src/GharKhoj.Api/Dockerfile

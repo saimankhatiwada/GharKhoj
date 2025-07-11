@@ -4,8 +4,8 @@ public class Role
 {
     public static readonly Role None = new(0, string.Empty);
     public static readonly Role Seeker = new(1, "Seeker");
-    public static readonly Role Broker = new(1, "Broker");
-    public static readonly Role SuperAdmin = new(2, "SuperAdmin");
+    public static readonly Role Broker = new(2, "Broker");
+    public static readonly Role SuperAdmin = new(3, "SuperAdmin");
 
     public Role(int id, string name)
     {
