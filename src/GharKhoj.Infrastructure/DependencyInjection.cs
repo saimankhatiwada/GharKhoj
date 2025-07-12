@@ -1,10 +1,12 @@
 ﻿using Asp.Versioning;
+using Azure;
 using GharKhoj.Application.Abstracions.Authentication;
 using GharKhoj.Application.Abstracions.Caching;
 using GharKhoj.Application.Abstracions.Clock;
 using GharKhoj.Application.Abstracions.Data;
 using GharKhoj.Application.Abstracions.Repositories;
 using GharKhoj.Domain.Abstractions;
+using GharKhoj.Domain.Properties;
 using GharKhoj.Infrastructure.Authentication;
 using GharKhoj.Infrastructure.Authorization;
 using GharKhoj.Infrastructure.Caching;
@@ -12,6 +14,8 @@ using GharKhoj.Infrastructure.Clock;
 using GharKhoj.Infrastructure.Data;
 using GharKhoj.Infrastructure.Outbox;
 using GharKhoj.Infrastructure.Repositories;
+using GharKhoj.Infrastructure.Sorting;
+using GharKhoj.Infrastructure.Sorting.Mappings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +55,8 @@ public static class DependencyInjection
         AddOutboxServices(services, configuration);
 
         AddOpenTelemetryServices(services, environment);
+
+        AddSortingServices(services);
 
         return services;
     }
@@ -176,5 +182,13 @@ public static class DependencyInjection
                     .AddAspNetCoreInstrumentation()
                     .AddRuntimeInstrumentation())
                 .UseOtlpExporter();
+    }
+
+    private static void AddSortingServices(IServiceCollection services)
+    {
+        services.AddTransient<SortMappingProvider>();
+
+        services.AddSingleton<ISortMappingDefinition, SortMappingDefinition<Property>>(_ =>
+            PropertySortMapping.SortMapping);
     }
 }

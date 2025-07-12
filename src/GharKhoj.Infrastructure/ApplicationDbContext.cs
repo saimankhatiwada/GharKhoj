@@ -3,6 +3,7 @@ using Azure;
 using GharKhoj.Application.Abstracions.Clock;
 using GharKhoj.Application.Exceptions;
 using GharKhoj.Domain.Abstractions;
+using GharKhoj.Domain.Properties;
 using GharKhoj.Domain.Users;
 using GharKhoj.Infrastructure.Outbox;
 using Microsoft.Data.SqlClient;
@@ -20,6 +21,7 @@ public sealed class ApplicationDbContext : DbContext, IUnitOfWork
 
     private readonly IDateTimeProvider _dateTimeProvider;
     public DbSet<User> Users { get; set; }
+    public DbSet<Property> Properties { get; set; }
 
     public ApplicationDbContext(DbContextOptions options, IDateTimeProvider dateTimeProvider) : base(options)
     {
