@@ -2,7 +2,7 @@
 
 public sealed record Currency
 {
-    internal static readonly Currency None = new("");
+    internal static readonly Currency None = new(string.Empty);
     public static readonly Currency Usd = new("USD");
     public static readonly Currency Npr = new("NPR");
 
@@ -16,8 +16,14 @@ public sealed record Currency
             throw new ApplicationException("The currency code is invalid");
     }
 
+    public static Currency ChechCode(string code)
+    {
+        return All.FirstOrDefault(c => c.Code == code) ?? None;
+    }
+
     public static readonly IReadOnlyCollection<Currency> All =
     [
+        None,
         Usd,
         Npr
     ];
