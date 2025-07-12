@@ -17,6 +17,9 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
             Permission.UsersRead,
             Permission.UsersReadSingle,
             Permission.UsersUpdate,
-            Permission.UsersDelete);
+            Permission.UsersDelete,
+            Permission.PropertiesRead,
+            Permission.PropertiesReadSingle,
+            Permission.PropertiesCreate);
     }
 }

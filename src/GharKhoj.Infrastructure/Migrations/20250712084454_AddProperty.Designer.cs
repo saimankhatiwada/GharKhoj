@@ -4,6 +4,7 @@ using GharKhoj.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GharKhoj.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250712084454_AddProperty")]
+    partial class AddProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,21 +106,6 @@ namespace GharKhoj.Infrastructure.Migrations
                         {
                             Id = 5,
                             Name = "users:delete"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "properties:read"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "properties:read-single"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "properties:create"
                         });
                 });
 
@@ -184,33 +172,8 @@ namespace GharKhoj.Infrastructure.Migrations
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 7
-                        },
-                        new
-                        {
                             RoleId = 2,
                             PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 8
                         },
                         new
                         {
@@ -236,21 +199,6 @@ namespace GharKhoj.Infrastructure.Migrations
                         {
                             RoleId = 3,
                             PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 8
                         });
                 });
 

@@ -20,8 +20,33 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
             },
             new RolePermission
             {
+                RoleId = Role.Seeker.Id,
+                PermissionId = Permission.PropertiesRead.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.Seeker.Id,
+                PermissionId = Permission.PropertiesReadSingle.Id
+            },
+            new RolePermission
+            {
                 RoleId = Role.Broker.Id,
                 PermissionId = Permission.UsersReadSelf.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.Broker.Id,
+                PermissionId = Permission.PropertiesRead.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.Broker.Id,
+                PermissionId = Permission.PropertiesReadSingle.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.Broker.Id,
+                PermissionId = Permission.PropertiesCreate.Id
             },
             new RolePermission
             {
@@ -47,6 +72,21 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
             {
                 RoleId = Role.SuperAdmin.Id,
                 PermissionId = Permission.UsersDelete.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.SuperAdmin.Id,
+                PermissionId = Permission.PropertiesRead.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.SuperAdmin.Id,
+                PermissionId = Permission.PropertiesReadSingle.Id
+            },
+            new RolePermission
+            {
+                RoleId = Role.SuperAdmin.Id,
+                PermissionId = Permission.PropertiesCreate.Id
             });
     }
 }

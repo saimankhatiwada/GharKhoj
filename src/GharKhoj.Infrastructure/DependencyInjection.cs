@@ -72,6 +72,8 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
 
+        services.AddScoped<IPropertyRepository, PropertyRepository>();
+
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
         services.AddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
