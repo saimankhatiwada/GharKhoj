@@ -10,4 +10,9 @@ public static class ErrorCodes
         public const string InvalidRefreshToken = "Users.InvalidRefreshToken";
         public const string ThirdParty = "Users.ThirdParty";
     }
+
+    public static class Properties
+    {
+        public const string NotFound = "Properties.NotFound";
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using GharKhoj.Api.MimeTypes;
+using GharKhoj.Api.Services;
 using GharKhoj.Api.Swagger;
 using GharKhoj.Application;
 using GharKhoj.Infrastructure;
@@ -19,6 +20,9 @@ internal static class DependencyInjection
         ConfigureApplicationAndInfrastructure(builder);
 
         ConfigureSwagger(builder);
+
+        builder.Services.AddTransient<DataShapingService>();
+        builder.Services.AddTransient<LinkService>();
 
         return builder;
     }

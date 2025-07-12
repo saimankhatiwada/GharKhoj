@@ -7,10 +7,6 @@ internal sealed class CreatePropertyCommandValidator : AbstractValidator<CreateP
 {
     public CreatePropertyCommandValidator()
     {
-        RuleFor(p => p.UserId)
-            .NotEmpty()
-            .WithMessage("User id cannot be empty");
-
         RuleFor(p => p.Tittle)
             .NotEmpty()
             .WithMessage("Title cannot be empty")

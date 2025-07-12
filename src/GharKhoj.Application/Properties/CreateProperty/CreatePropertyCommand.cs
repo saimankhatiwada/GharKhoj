@@ -3,7 +3,6 @@
 namespace GharKhoj.Application.Properties.CreateProperty;
 
 public sealed record CreatePropertyCommand(
-    string UserId, 
     string Tittle, 
     string Desciption, 
     string Country, 

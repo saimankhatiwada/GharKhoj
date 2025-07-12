@@ -1,4 +1,5 @@
-﻿using GharKhoj.Application.Abstracions.Messaging;
+﻿using GharKhoj.Application.Abstracions.Authentication;
+using GharKhoj.Application.Abstracions.Messaging;
 using GharKhoj.Application.Abstracions.Repositories;
 using GharKhoj.Domain.Abstractions;
 using GharKhoj.Domain.Properties;
@@ -10,21 +11,27 @@ internal sealed class CreatePropertyCommandHandler : ICommandHandler<CreatePrope
 {
     private readonly IPropertyRepository _propertyRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreatePropertyCommandHandler(IPropertyRepository propertyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public CreatePropertyCommandHandler(
+        IPropertyRepository propertyRepository, 
+        IUserRepository userRepository, 
+        IUserContext userContext, 
+        IUnitOfWork unitOfWork)
     {
         _propertyRepository = propertyRepository;
         _userRepository = userRepository;
+        _userContext = userContext;
         _unitOfWork = unitOfWork;
     }
     public async Task<Result<string>> Handle(CreatePropertyCommand request, CancellationToken cancellationToken)
     {
-        User? user = await _userRepository.GetByIdAsync(new UserId(request.UserId), cancellationToken);
+        User? user = await _userRepository.GetByIdAsync(new UserId(_userContext.UserId), cancellationToken);
 
         if (user is null)
         {
-            return Result.Failure<string>(PropertyErrors.UserNotExists(request.UserId));
+            return Result.Failure<string>(PropertyErrors.UserNotExists(_userContext.UserId));
         }
 
         var property = Property.Create(
