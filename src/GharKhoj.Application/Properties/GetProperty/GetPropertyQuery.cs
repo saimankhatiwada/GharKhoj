@@ -1,10 +1,6 @@
-﻿using GharKhoj.Application.Abstracions.Caching;
+﻿using GharKhoj.Application.Abstracions.Messaging;
 using GharKhoj.Domain.Properties;
 
 namespace GharKhoj.Application.Properties.GetProperty;
 
-public sealed record GetPropertyQuery(string PropertyId, string? Fields) : ICachedQuery<Property>
-{
-    public string CacheKey => $"{nameof(GetPropertyQuery)}-{PropertyId}-{Fields}";
-    public TimeSpan? Expiration => TimeSpan.FromMinutes(2);
-}
+public sealed record GetPropertyQuery(string PropertyId, string? Fields) : IQuery<Property>;

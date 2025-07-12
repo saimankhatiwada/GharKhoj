@@ -1,7 +1,8 @@
 ﻿using System.Buffers;
-using System.Text.Json;
+using System.Text;
 using GharKhoj.Application.Abstracions.Caching;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace GharKhoj.Infrastructure.Caching;
 
@@ -36,17 +37,15 @@ internal sealed class CacheService : ICacheService
 
     private static T Deserialize<T>(byte[] bytes)
     {
-        return JsonSerializer.Deserialize<T>(bytes)!;
+        string json = Encoding.UTF8.GetString(bytes);
+
+        return JsonConvert.DeserializeObject<T>(json)!;
     }
 
     private static byte[] Serialize<T>(T value)
     {
-        var buffer = new ArrayBufferWriter<byte>();
+        string json = JsonConvert.SerializeObject(value);
 
-        using var writer = new Utf8JsonWriter(buffer);
-
-        JsonSerializer.Serialize(writer, value);
-
-        return buffer.WrittenSpan.ToArray();
+        return Encoding.UTF8.GetBytes(json);
     }
 }
