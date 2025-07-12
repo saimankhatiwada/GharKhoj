@@ -1,7 +1,6 @@
 ﻿using System.Dynamic;
 using System.Net.Mime;
 using Asp.Versioning;
-using Azure;
 using GharKhoj.Api.MimeTypes;
 using GharKhoj.Api.Models.Common;
 using GharKhoj.Api.Models.Properties;
@@ -19,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GharKhoj.Api.Property;
 
+/// <summary>
+/// Provides property related endpoints for managing property resources.
+/// </summary>
 [ApiController]
 [ApiVersion(1)]
 [Route("properties")]
@@ -42,6 +44,11 @@ public class PropertyController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Retrieves a paginated list of properties based on the provided query parameters.
+    /// </summary>
+    /// <param name="propertiesQueryParameters">The query parameters for filtering, sorting, and pagination.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
     [HttpGet]
     [ProducesResponseType<PaginationResultDto<PropertyDto>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,6 +104,12 @@ public class PropertyController : ControllerBase
         return Ok(dataShapedPaginatedResult);
     }
 
+    /// <summary>
+    /// Retrieves a specific property by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the property to retrieve.</param>
+    /// <param name="propertyQueryParameters">Query parameters for data shaping and including links.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
     [HttpGet("{id}")]
     [ProducesResponseType<PropertyDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,13 +117,20 @@ public class PropertyController : ControllerBase
     [HasPermission(Permissions.PropertiesReadSingle)]
     public async Task<IActionResult> GetProperty(string id, [FromQuery] PropertyQueryParameters propertyQueryParameters, CancellationToken cancellationToken = default)
     {
+        if (!_dataShapingService.Validate<Domain.Properties.Property>(propertyQueryParameters.Fields))
+        {
+            return Problem(
+                statusCode: StatusCodes.Status400BadRequest,
+                detail: $"Invalid fields parameter: {propertyQueryParameters.Fields}");
+        }
+
         var query = new GetPropertyQuery(id, propertyQueryParameters.Fields);
 
         Result<Domain.Properties.Property> result = await _sender.Send(query, cancellationToken);
 
-        return result.IsSuccess
-            ? Ok(PropertyMappings.ToDto(result.Value))
-            : result.Error.Code switch
+        if (result.IsFailure)
+        {
+            return result.Error.Code switch
             {
                 ErrorCodes.Properties.NotFound => Problem(
                         statusCode: StatusCodes.Status404NotFound,
@@ -119,8 +139,26 @@ public class PropertyController : ControllerBase
                         statusCode: StatusCodes.Status400BadRequest,
                         detail: result.Error.Description)
             };
+        }
+
+        PropertyDto propertyDto = PropertyMappings.ToDto(result.Value);
+
+        ExpandoObject dataShapedPropertyDto = _dataShapingService.ShapeData(propertyDto, propertyQueryParameters.Fields);
+
+        if (propertyQueryParameters.IncludeLinks)
+        {
+            ((IDictionary<string, object?>)dataShapedPropertyDto)[nameof(ILinksResponseDto.Links)] =
+                CreateLinksForProperty(id, query.Fields);
+        }
+
+        return Ok(dataShapedPropertyDto);
     }
 
+    /// <summary>
+    /// Creates a new property resource.
+    /// </summary>
+    /// <param name="createPropertyDto">The data transfer object containing the details of the property to create.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
     [HttpPost]
     [ProducesResponseType<string>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
