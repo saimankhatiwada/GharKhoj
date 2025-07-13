@@ -84,13 +84,13 @@ public static class DependencyInjection
         string connectionString = configuration.GetConnectionString("Cache") ??
                                           throw new ArgumentNullException(nameof(configuration));
 
-        IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
+        //IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
 
-        services.AddSingleton(redisConnectionMultiplexer);
+        //services.AddSingleton(redisConnectionMultiplexer);
 
-        services.AddStackExchangeRedisCache(options => options.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer));
+        //services.AddStackExchangeRedisCache(options => options.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer));
 
-        //services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
+        services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
 
         services.AddSingleton<ICacheService, CacheService>();
     }

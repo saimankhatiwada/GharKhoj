@@ -5,13 +5,13 @@ services:
       context: .
       dockerfile: src/GharKhoj.Api/Dockerfile
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://gharkhoj.jaeger:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://gharkhoj.aspire:18889
       - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
     depends_on:
       - gharkhoj.db
       - gharkhoj.idp
       - gharkhoj.cache
-      - gharkhoj.jaeger
+      - gharkhoj.aspire
       
   gharkhoj.db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -43,11 +43,9 @@ services:
     ports:
       - "6379:6379"
 
-  gharkhoj.jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "16686:16686"    
-      - "4317:4317"      
-      - "6831:6831/udp"
+  gharkhoj.aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:9.0
     environment:
-      - COLLECTOR_OTLP_ENABLED=true
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: true
+    ports:
+      - "18888:18888"
