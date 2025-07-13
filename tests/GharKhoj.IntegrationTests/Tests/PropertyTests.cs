@@ -10,7 +10,7 @@ namespace GharKhoj.IntegrationTests.Tests;
 public sealed class PropertyTests(GharKhojWebAppFactory factory) : IntegrationTestFixture(factory)
 {
     [Fact]
-    public async Task CreateHabit_ShouldSucceed_WithValidParameters()
+    public async Task CreateProperty_ShouldSucceed_WithValidParameters()
     {
         PropertyDto propertyDto = TestsData.Properties.CreateMockProperty();
         HttpClient client = await CreateAuthorizedClientAsync();
